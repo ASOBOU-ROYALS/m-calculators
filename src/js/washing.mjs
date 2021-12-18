@@ -12,12 +12,43 @@ const Classes = {
   "Night Lord": "thief",
 };
 
-const HealthPointGain = {
+
+const HealthPointGainMinimumResetAP = {
+  archer: 16,
+  thief: 16,
+  corsair: 16,
+  bucc: 36,
+  warrior: 50,
+  magician: 6,
+  beginner: 8,
+};
+
+const HealthPointGainAverageResetAP = {
   archer: 18,
   thief: 18,
+  corsair: 18,
+  bucc: 38,
+  warrior: 52,
+  magician: 8,
+  beginner: 10,
+};
+
+const HealthPointGainMinimumFreshAP = {
+  archer: 16,
+  thief: 20,
   corsair: 20,
   bucc: 40,
-  warrior: 52,
+  warrior: 50,
+  magician: 10,
+  beginner: 8,
+};
+
+const HealthPointGainAverageFreshAP = {
+  archer: 18,
+  thief: 22,
+  corsair: 20,
+  bucc: 40,
+  warrior: 52.5,
   magician: 15,
   beginner: 10,
 };
@@ -227,6 +258,17 @@ function GetWashableManaPoints(className, level, currentMana) {
   return Math.max(currentMana - minimumMana, 0);
 }
 
+// GetWashedManaPoints returns the amount of MP washed out by the
+// input number of washes
+function GetWashedManaPoints(className, numberOfWashes) {
+  if (!Classes.hasOwnProperty(className)) {
+    throw new Exception(`unrecognized class name ${className}`);
+  }
+
+  var internalClassName = Classes[className];
+  return ManaPointLoss[internalClassName] * numberOfWashes;
+}
+
 // GetWashes returns the number of HP washes that the input character can do
 function GetWashes(className, washableMana) {
   if (!Classes.hasOwnProperty(className)) {
@@ -239,15 +281,62 @@ function GetWashes(className, washableMana) {
   return Math.floor(washableMana / mpLossPerWash);
 }
 
-// GetHealthPointGain returns the amount of HP that the input
-// character can gain through washing MP
-function GetHealthPointGain(className, numWashes) {
+// GetMinimalHealthPointGainOptimal returns the minimal amount of HP that the input
+// character can gain through washing MP optimally
+function GetMinimalHealthPointGainOptimal(className, numFreshAPs, numWashedAPs) {
   if (!Classes.hasOwnProperty(className)) {
     throw new Exception(`unrecognized class name ${className}`);
   }
 
   var internalClassName = Classes[className];
-  var hpGainPerWash = HealthPointGain[internalClassName];
+  var hpGainPerFreshAP = HealthPointGainMinimumFreshAP[internalClassName];
+  var hpGainPerWashedAP = HealthPointGainMinimumResetAP[internalClassName];
 
-  return numWashes * hpGainPerWash;
+  return (numFreshAPs * hpGainPerFreshAP) + (numWashedAPs * hpGainPerWashedAP);
+}
+
+// GetAverageHealthPointGainOptimal returns the average amount of HP that the input
+// character can gain through washing MP optimally
+function GetAverageHealthPointGainOptimal(className, numFreshAPs, numWashedAPs) {
+  if (!Classes.hasOwnProperty(className)) {
+    throw new Exception(`unrecognized class name ${className}`);
+  }
+
+  var internalClassName = Classes[className];
+  var hpGainPerFreshAP = HealthPointGainAverageFreshAP[internalClassName];
+  var hpGainPerWashedAP = HealthPointGainAverageResetAP[internalClassName];
+
+  return (numFreshAPs * hpGainPerFreshAP) + (numWashedAPs * hpGainPerWashedAP);
+}
+
+// GetMinimalHealthPointGainOptimal returns the minimal amount of HP that the input
+// character can gain through washing all MP now
+function GetMinimalHealthPointGainWashNow(className, numWashedAPs) {
+  if (!Classes.hasOwnProperty(className)) {
+    throw new Exception(`unrecognized class name ${className}`);
+  }
+
+  var internalClassName = Classes[className];
+  var hpGainPerWashedAP = HealthPointGainMinimumResetAP[internalClassName];
+
+  return numWashedAPs * hpGainPerWashedAP;
+}
+
+// GetAverageHealthPointGainOptimal returns the average amount of HP that the input
+// character can gain through washing all MP now
+function GetAverageHealthPointGainWashNow(className, numWashedAPs) {
+  if (!Classes.hasOwnProperty(className)) {
+    throw new Exception(`unrecognized class name ${className}`);
+  }
+
+  var internalClassName = Classes[className];
+  var hpGainPerWashedAP = HealthPointGainAverageResetAP[internalClassName];
+
+  return numWashedAPs * hpGainPerWashedAP;
+}
+
+// GetFreshAPsLeft gets the number of fresh APs left for a
+// character with the input level
+function GetFreshAPsLeft(level) {
+  return (200 - level) * 5;
 }
