@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title lang="en">MRoyals Washing Calculator</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <script src="./js/washing.min.mjs" crossorigin="anonymous"></script>
+    </head>
+<body lang="en">
+    <h1>MRoyals Washing Calculator</h1>
+    <p>
+        I have no ideas if these numbers are right.
+        I got the numbers from <a href="https://mapleroyals.com/forum/threads/hp-washing-calculator.111127/">Shiyui's Washing Calculator</a>.
+    </p>
+    <form id="washing-form">
+        <label for="form--msClassName">Class:</label>
+        <select name="msClassName" id="form--msClassName">
+            <option value="Bowmaster">Bowmaster</option>
+            <option value="Marksman">Marksman</option>
+            <option value="Shadower">Shadower</option>
+            <option value="Buccaneer">Buccaneer</option>
+            <option value="Corsair">Corsair</option>
+            <option value="Dark Knight">Dark Knight</option>
+            <option value="Hero">Hero</option>
+            <option value="Paladin">Paladin</option>
+            <option value="Magician">Magician</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Night Lord">Night Lord</option>
+        </select>
+        <label for="form--characterLevel">Level:</label>
+        <input type="number" name="characterLevel" id="form--characterLevel" min="1" max="200" value="1"/>
+        <label for="form--characterMP">MP:</label>
+        <input type="number" name="characterMP" id="form--characterMP" min="1" max="30000" value="1"/>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </form>
+    <div id="form-output"></div>
+</body>
+<script src="./js/washing_ui.min.js" crossorigin="anonymous"></script>

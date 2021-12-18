@@ -1,0 +1,29 @@
+body > * {
+  display: block;
+  max-width: 800px;
+}
+body > *,
+header > *,
+main > * {
+  margin: auto auto 0.5em auto;
+}
+body.prose > * {
+  text-align: left;
+}
+body > img {
+  padding: 0.5em;
+}
+body {
+  font-family: "Tahoma", sans-serif;
+  text-align: center;
+}
+#logos img {
+  height: 3em;
+}
+.grid-reset > * {
+  margin: 0px;
+}
+ul,
+ol {
+  list-style-position: inside;
+}
