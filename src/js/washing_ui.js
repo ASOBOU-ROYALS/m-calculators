@@ -8,14 +8,15 @@ $("#washing-form").submit(function(event) {
     const numWashesLeft = GetWashes(characterClass, washableMP);
 
     const freshAPsLeft = GetFreshAPsLeft(characterLevel);
-    const optimalResetAPsLeft = Math.max(numWashesLeft - freshAPsLeft, 0);
-    const mpWashedNowOptimal = GetWashedManaPoints(characterClass, optimalResetAPsLeft);
-    const mpWashedLaterOptimal = GetWashedManaPoints(characterClass, freshAPsLeft);
+    const optimalWashLaterAPs = Math.min(freshAPsLeft, numWashesLeft);
+    const optimalWashNowAPsLeft = Math.max(numWashesLeft - optimalWashLaterAPs, 0);
+    const mpWashedLaterOptimal = GetWashedManaPoints(characterClass, optimalWashLaterAPs);
+    const mpWashedNowOptimal = GetWashedManaPoints(characterClass, optimalWashNowAPsLeft);
 
     const hpGainWashNowMin = GetMinimalHealthPointGainWashNow(characterClass, numWashesLeft);
     const hpGainWashNowAvg = GetAverageHealthPointGainWashNow(characterClass, numWashesLeft);
-    const hpGainWashOptimalMin = GetMinimalHealthPointGainOptimal(characterClass, freshAPsLeft, optimalResetAPsLeft);
-    const hpGainWashOptimalAvg = GetAverageHealthPointGainOptimal(characterClass, freshAPsLeft, optimalResetAPsLeft);
+    const hpGainWashOptimalMin = GetMinimalHealthPointGainOptimal(characterClass, optimalWashLaterAPs, optimalWashNowAPsLeft);
+    const hpGainWashOptimalAvg = GetAverageHealthPointGainOptimal(characterClass, optimalWashLaterAPs, optimalWashNowAPsLeft);
 
     var elements = [];
     if (hpGainWashNowAvg != hpGainWashOptimalAvg) {
@@ -25,7 +26,7 @@ $("#washing-form").submit(function(event) {
         elements.push(element1);
 
         const element2 = document.createElement("p");
-        const textNode2 = document.createTextNode(`[Option 2] You can wash ${mpWashedNowOptimal} MP now using ${optimalResetAPsLeft} APRs, and then use ${freshAPsLeft} fresh APRs to wash ${mpWashedLaterOptimal} MP. This gains at least ${hpGainWashOptimalMin} HP and on average ${hpGainWashOptimalAvg} HP.`);
+        const textNode2 = document.createTextNode(`[Option 2] You can wash ${mpWashedNowOptimal} MP now using ${optimalWashNowAPsLeft} APRs, and then use ${optimalWashLaterAPs} fresh APRs to wash ${mpWashedLaterOptimal} MP. This gains at least ${hpGainWashOptimalMin} HP and on average ${hpGainWashOptimalAvg} HP.`);
         element2.appendChild(textNode2);
         elements.push(element2);
     } else {
