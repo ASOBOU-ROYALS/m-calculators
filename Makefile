@@ -5,7 +5,6 @@ run: publish
 minimize:
 	@echo "Go to https://minify-js.com/"
 
-
 publish:
 	cp src/*.html docs/
 	cp src/css/*.css docs/css/

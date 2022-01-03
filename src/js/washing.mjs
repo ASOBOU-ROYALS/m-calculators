@@ -16,26 +16,6 @@ const Classes = {
 const HealthPointGainMinimumResetAP = {
   archer: 16,
   thief: 16,
-  corsair: 16,
-  bucc: 36,
-  warrior: 50,
-  magician: 6,
-  beginner: 8,
-};
-
-const HealthPointGainAverageResetAP = {
-  archer: 18,
-  thief: 18,
-  corsair: 18,
-  bucc: 38,
-  warrior: 52,
-  magician: 8,
-  beginner: 10,
-};
-
-const HealthPointGainMinimumFreshAP = {
-  archer: 16,
-  thief: 20,
   corsair: 20,
   bucc: 40,
   warrior: 50,
@@ -43,13 +23,33 @@ const HealthPointGainMinimumFreshAP = {
   beginner: 8,
 };
 
-const HealthPointGainAverageFreshAP = {
+const HealthPointGainAverageResetAP = {
   archer: 18,
-  thief: 22,
+  thief: 18,
   corsair: 20,
   bucc: 40,
   warrior: 52.5,
   magician: 15,
+  beginner: 10,
+};
+
+const HealthPointGainMinimumFreshAP = {
+  archer: 16,
+  thief: 20,
+  corsair: 16,
+  bucc: 36,
+  warrior: 50,
+  magician: 6,
+  beginner: 8,
+};
+
+const HealthPointGainAverageFreshAP = {
+  archer: 18,
+  thief: 22,
+  corsair: 18,
+  bucc: 38,
+  warrior: 52,
+  magician: 8,
   beginner: 10,
 };
 
@@ -245,6 +245,27 @@ const MinimumManaPoints = {
   magician: MinimumManaPointsMagician,
   beginner: MinimumManaPointsBeginner,
 };
+
+const OptimalWashingStrategy = {
+  archer: "either",
+  thief: "fresh",
+  bucc: "reset",
+  corsair: "reset",
+  warrior: "reset",
+  magician: "reset",
+  beginner: "either",
+}
+
+// GetOptimalWashingStrategy tells which is more optimal
+// for the class, fresh APs or APRs into HP
+function GetOptimalWashingStrategy(className) {
+  if (!Classes.hasOwnProperty(className)) {
+    throw new Exception(`unrecognized class name ${className}`);
+  }
+
+  var internalClassName = Classes[className];
+  return OptimalWashingStrategy[internalClassName];
+}
 
 // GetWashableManaPoints returns the amount of MP that the
 // input character can wash
