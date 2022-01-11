@@ -2,11 +2,13 @@
 run: publish
 	cd docs && python3 -m http.server
 
-minimize:
-	@echo "Go to https://minify-js.com/"
+node_modules: package.json
+	npm install
 
-publish:
+minimize: node_modules
+	./node_modules/.bin/uglifyjs src/js/washing_ui.js --compress > docs/js/washing_ui.min.js
+	./node_modules/.bin/uglifyjs src/js/washing.mjs --compress > docs/js/washing.min.mjs
+
+publish: minimize
 	cp src/*.html docs/
 	cp src/css/*.css docs/css/
-	cp src/js/*.min.mjs docs/js/
-	cp src/js/*.min.js docs/js/

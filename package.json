@@ -1,0 +1,16 @@
+{
+  "name": "m-calculators",
+  "version": "1.0.0",
+  "description": "Calculating things",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"lol\""
+  },
+  "author": "ASOBOU-ROYALS",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "uglify-js": "^3.14.5"
+  }
+}
